@@ -1,3 +1,4 @@
+import random
 pizzas = [
     [0, 'Греция', 370, 650, 'Соус из томатов + помидоры + перец болгарский + лук красный + маслины + сыр Моцарелла'],
     [1, 'Маргарита', 250, 400, 'Соус из томатов + помидоры + сыр Моцарелла'],
@@ -12,11 +13,17 @@ pizzas = [
 ]
 
 while True:
-    a = input('Введите 1 или 0: ')
+    a = input('Введите 1, 0, 2: ')
     match a:
         case '0':
             break
         case '1':
             print(pizzas)
+        case '2':
+            rd1 = random.randint(1, 5)
+            rd2 = random.sample(pizzas, rd1)
+            print(rd1)
+            print(rd2)
+
         case _:
             print('Не верно, введите 1 или 0')
