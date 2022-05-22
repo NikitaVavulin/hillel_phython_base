@@ -15,26 +15,47 @@ Pizzas = [
     Pizza(8, 'Папперони', 170, 'Соус из томатов + пепперони + сыр Моцарелла'),
     Pizza(9, 'С грибами', 190, 'Соус из томатов + ветчина + шампиньоны + маслины + сыр Моцарелла')
 ]
+def error():
+    print("Не верно, введите указаное число!")
+
+def intro():
+    print("Введите:\n0 для очистки\n1 для вывода пицц\n2 для вывода рандомных пицц\n3 для вывода пицц дешевле и дороже 250грн:")
+
+def pizzalist(li):
+    for item in li:
+        print("\nНазвание:", item.name, "\nЦена:", item.price, "\nОписание:", item.description)
+
+def randompizza(li):
+    rd1 = random.randint(1, 5)
+    rd2 = random.sample(li, rd1)
+    print("\nКоличество рандомных пицц:", rd1, "\nПиццы:")
+    for item in rd2:
+        print("\nНазвание:", item.name, "\nЦена:", item.price, "\nОписание:", item.description)
+
+def filtpizza(li):
+    pizzas2 = [item for item in li if item.price <= 250]
+    pizzas3 = [item for item in li if item.price >=250]
+    print("Пиццы дешевле 250грн: ")
+    for item in pizzas2:
+        print("\nНазвание:", item.name, "\nЦена:", item.price, "\nОписание:", item.description)
+    print("\nПицы дороже 250грн:")
+    for item in pizzas3:
+        print("\nНазвание:", item.name, "\nЦена:", item.price, "\nОписание:", item.description)
+
+
 while True:
-    a = input("Введите:\n1 для вывода пицц\n2 для вывода рандомных пицц\n0 для очистки\n3 для вывода пицц дешевле и дороже 250грн:")
+    intro()
+    a = input()
     match a:
         case '0':
             break
         case '1':
-            print(*Pizzas, sep="\n")
+            print(pizzalist(Pizzas))
         case '2':
-            rd1 = random.randint(1, 5)
-            rd2 = random.sample(Pizzas, rd1)
-            print(rd1)
-            print(*rd2, sep="\n")
+            print(randompizza(Pizzas))
 
         case '3':
-            pizzas2 = [item for item in Pizzas if item.price <= 250]
-            print("Дешевле 250грн ", *pizzas2, sep="\n")
-            pizzas3 = [item for item in Pizzas if item.price >= 250]
-            print("Дороже 250грн ", *pizzas3, sep="\n")
-
-
+            print(filtpizza(Pizzas))
 
         case _:
-            print("Не верно, введите указаное число")
+            print(error())
