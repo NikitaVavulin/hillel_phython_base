@@ -15,32 +15,57 @@ Pizzas = [
     Pizza(8, 'Папперони', 170, 'Соус из томатов + пепперони + сыр Моцарелла'),
     Pizza(9, 'С грибами', 190, 'Соус из томатов + ветчина + шампиньоны + маслины + сыр Моцарелла')
 ]
+def decor_str(func):
+    def inner(e):
+        func(e)
+        print('-' * 100)
+    return inner
+
+def decor_list(func):
+    def inner(s):
+        print('*' * 100)
+        func(s)
+        print("Количество пицц в списке:", len(s))
+        print('*' * 100)
+    return inner
+
+def decor_check(func):
+    def inner(k):
+        print(f'\n{"Чек:"}')
+        print('*' * 100)
+        all = func(k)
+        print('*' * 100)
+        print(f'Цена за всё:{all}')
+        print('*' * 100)
+    return inner
+
 def error():
     print("Не верно, введите указаное число!")
 
 def intro():
+
     print("Введите:\n0 для очистки\n1 для вывода пицц\n2 для вывода рандомных пицц\n3 для вывода пицц дешевле и дороже 250грн:")
 
+@decor_list
 def pizzalist(li):
     for item in li:
-        print("\nНазвание:", item.name, "\nЦена:", item.price, "\nОписание:", item.description)
+        print_str(item)
 
-def randompizza(li):
-    rd1 = random.randint(1, 5)
-    rd2 = random.sample(li, rd1)
-    print("\nКоличество рандомных пицц:", rd1, "\nПиццы:")
-    for item in rd2:
-        print("\nНазвание:", item.name, "\nЦена:", item.price, "\nОписание:", item.description)
+@decor_str
+def print_str(item):
+    print(f'{item.idx + 1}, Название: {item.name}, Цена: {item.price}')
+    print(f'Описание: {item.description}')
 
-def filtpizza(li):
-    pizzas2 = [item for item in li if item.price <= 250]
-    pizzas3 = [item for item in li if item.price >=250]
-    print("Пиццы дешевле 250грн: ")
-    for item in pizzas2:
-        print("\nНазвание:", item.name, "\nЦена:", item.price, "\nОписание:", item.description)
-    print("\nПицы дороже 250грн:")
-    for item in pizzas3:
-        print("\nНазвание:", item.name, "\nЦена:", item.price, "\nОписание:", item.description)
+@decor_check
+def check(li):
+    i = 0
+    for nm, unit in enumerate(li, start=1):
+        q = random.randint(1, 3)
+        t = unit.price * q
+        i += t
+        print(f'{nm} | Название: {unit.name} | Цена: {unit.price} | Количество: {q} | Полная цена:{t}')
+
+    return i
 
 
 while True:
@@ -52,10 +77,16 @@ while True:
         case '1':
             print(pizzalist(Pizzas))
         case '2':
-            print(randompizza(Pizzas))
+            pizza_random = random.sample(Pizzas, k = random.randint(1, 5))
+            check(pizza_random)
 
         case '3':
-            print(filtpizza(Pizzas))
+            pizzas2 = [item for item in Pizzas if item.price <= 250]
+            pizzas3 = [item for item in Pizzas if item.price >= 250]
+            print('\nПиццы дешевле 250: ')
+            pizzalist(pizzas2)
+            print('\nПиццы дороже 250: ')
+            pizzalist(pizzas3)
 
         case _:
             print(error())
